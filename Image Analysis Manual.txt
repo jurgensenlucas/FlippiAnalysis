@@ -1,0 +1,168 @@
+5Image Analyzation FIJI Macro Manual
+Harrison Lab, Boyce Thomas Institute, Cornell University
+Author: Lucas Jurgensen, ljj35@cornell.edu
+Collaborator: Sergey Ivanov, si225@cornell.edu
+
+Original procedure credit goes to S. Banerjee and W. Versaw
+
+--------------
+Image Analyzer
+--------------
+
+Purpose:
+To speed up the process of measuring the mean intensity of an entire field of
+view, primarily designed for microscope images.
+
+
+How to Use:
+1. Drag the macro file on top of the ImageJ / FIJI toolbar; a window showing the
+macro code should appear immediately.
+2. If there is already a results window open, make sure to clear or erase the
+data from the window; closing the window also works
+2. Select the 'Run' bottom on the bottom left hand side of the new window
+3. Select the folder that you would like to be processed (it is vital that the
+files in the folder are organized correctly, see 'requirements' below)
+4. As the macro runs, the results window will open up and the data will collect
+there.
+5. Once the image processing is complete, the macro will ask the user 'How many
+data points are there?' The user should input the highest value of the left
+column for the data. Should be equal to three times the number of sets.
+6. Once entered, four new columns will appear with the data neatly arranged for
+values of CC, CY, and YY based on image numbers. These numbers are the final
+results.
+7. The macro also creates four new files, a mask file made from the 'ch00' image,
+and three result files from comparison of images with the mask file. Example as
+follows:
+	Image001_ch00-m.tif
+	Image002_ch00-result.tif
+	Image002_ch01-result.tif
+	Image002_ch02-result.tif
+
+
+Requirements:
+1. All images must be in the same folder as the software handles one folder at
+a time
+2. The sets of images must be titled 'Image0' followed by two digit tag and a
+'ch' value for a tag within each set; example as follows:
+	Image001_ch00.tif
+	Image001_ch01.tif
+	Image001_ch02.tif
+
+Code Variables:
+	Processing Loop:
+		directory - The full designation for the folder where images are kept
+		count - A counting that counts how many sets of images are in the folder
+			selected by the user
+		num -A counting variable for the for loop that shuffles through all
+			possible images from Image000 through Image099
+		primary_photo_name - Only the name of the base image of the set, such as
+			Image001.ch00.tif
+		primary_photo - The full name of the image plus the directory from which the
+			image comes from.
+
+	Function:
+		raw_start_name - The primary_photo that gets passed into the function
+		dir - Same as previous directory, it is the folder where the images are kept
+		name_m - The short file name for the new mask file, ex. Image01.ch00-m.tif
+		raw_name_m - The full name of the mask file including directory
+		name00 - The short name of the first image, ex. Image01.ch00.tif
+		raw_name00 - The full name of the first image including directory
+		name01 - The short name of the second image, ex. Image01.ch00.tif
+		raw_name01 - The full name of the second image including directory
+		name02 - The short name of the third image, ex. Image02.ch00.tif
+		raw_name02 - The full name of the third image including directory
+
+	Data Presentation:
+		counter - A counting number that keeps track of which datum the loop is
+			currently organizing
+		max_value - The number of the last data point collected, used for organizing
+			the final data table
+		max_row - 1/3 of the max value, this is the number of rows there will be
+		row - A for-loop variable which dictates which row the datum is being
+			inserted into
+		column - A for-loop variable which dictates which column the datum is being
+			inserted into
+
+
+
+----------------------
+Reverse Image Analyzer
+----------------------
+Purpose:
+To speed up the process of measuring the mean intensity of an entire field of
+view, in this instance, microscope images. This macro works the exact same way
+as the Image Analyzer function above with one change. The mask file is created
+using the third image. This is primarily  used for the Venus images.
+
+--See Image Analyzer documentation for rest of information--
+
+
+
+------------------
+ROI Image Analyzer
+------------------
+Purpose:
+To speed up the process of measuring mean intensity of specific regions of
+interest (ROI's) on all three images of a set
+
+How to Use:
+1. Drag the macro file on top of the ImageJ / FIJI toolbar; a window showing the
+macro code should appear immediately.
+2. If there is already a results window open, make sure to clear or erase the
+data from the window; closing the window also works
+2. Select the 'Run' bottom on the bottom left hand side of the new window
+3. Select the folder that you would like to be processed (it is vital that the
+files in the folder are organized correctly, see 'requirements' below)
+4. The macro will then ask the user for the desired number of ROI's. Input an
+whole number greater than zero, two is standard.
+5. The first image of the first set will then appear (ex. Image001_ch00.tif)
+6. Select the oval tool and highlight an ROI on the screen then click ok on the
+text box that appeared
+7. Repeat step six for the number of ROIs the user selected to use earlier
+8. The macro will then take measurements for those ROIs on all images and will
+then open the next set of images in the directory. This will continue until
+there are no sets left in the directory.
+9. The macro will then prompt the user 'How Many Data Points Are There?' Input
+the numerical value of the last datum of the collected data
+10. The macro will then organize the data neatly based on Image # and ROI # for
+the rows, and CC, CY, and YY for the columns.
+
+Requirements:
+1. All images must be in the same folder as the software handles one folder at
+a time
+2. The sets of images must be titled 'Image0' followed by two digit tag and a
+'ch' value for a tag within each set; example as follows:
+	Image001_ch00.tif
+	Image001_ch01.tif
+	Image001_ch02.tif
+
+Code Variables:
+	Processing Loop:
+		count -
+		num -
+		primary_photo_name -
+		primary_photo -
+
+	Function:
+		roi_num -  The desired number of regions of interest per set to be measured
+		selection_num - The counter used to track the number of selections the user
+			has already made in the image
+		name00 - The full name of the first image (Image001_ch00.tif) including
+			the directory location
+		name01 - The full name of the second image including the directory location
+		name02 - The full name of the third image including the directory location
+
+	Data Presentation:
+		spot - The location in numerical order of the datum being organized that
+			round through the logic loop
+		max_value - The numerical location of the final datum in the set, inputed
+			by the user when prompted by the macro
+		max_row - 1/3 of the max_value, this is the maximum number of rows
+		roi - A counter used to track and assign a ROI number to each datum
+		roi_num - The number of ROIs the user had selected to use earlier
+		row - The row of data currently being added to. This is a theoretical row
+			number as each 'row' has subset rows for each ROI which are not included
+			in this row number.
+		column - The column which the datum is currently being added to, the columns
+			are CC, CY, and YY
+		count - The row number for the subset rows within the 'row function'
